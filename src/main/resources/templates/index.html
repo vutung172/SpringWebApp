@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Trang chủ</title>
+</head>
+<body>
+    <h1>Trang chủ</h1>
+    <h2 th:text="${endpoint}"></h2>
+<h3 th:text="${sucess}" th:class="text-success"></h3>
+<h3 th:text="${fail}" th:class="text-danger"></h3>
+</body>
+</html>
