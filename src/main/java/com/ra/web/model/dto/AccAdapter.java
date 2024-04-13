@@ -1,7 +1,6 @@
 package com.ra.web.model.dto;
 
-import com.ra.web.model.entity.AccEntity;
-import com.ra.web.model.entity.RoleEntity;
+import com.ra.web.model.entity.accounts.AccEntity;
 import com.ra.web.repository.RoleRepository;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,7 +23,8 @@ import java.util.List;
 public class AccAdapter implements UserDetails{
     private AccEntity accEntity;
     private RoleRepository roleRepository;
-    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> roles = new ArrayList<>();
@@ -38,10 +38,12 @@ public class AccAdapter implements UserDetails{
     public String getPassword() {
         return passwordEncoder.encode(accEntity.getPassword());
     }
-
     @Override
     public String getUsername() {
         return accEntity.getUserName();
+    }
+    public String getEmail(){
+        return accEntity.getEmail();
     }
 
     @Override

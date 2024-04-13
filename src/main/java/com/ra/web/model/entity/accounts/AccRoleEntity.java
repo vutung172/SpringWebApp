@@ -1,14 +1,12 @@
-package com.ra.web.model.entity;
+package com.ra.web.model.entity.accounts;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "acc_role", schema = "warehouse_manager")
@@ -22,15 +20,17 @@ public class AccRoleEntity {
     @Column(name = "Role_Id")
     private Integer roleId;
 
-    @Basic
-    @Column(name = "Role_Acc_id")
-    private Integer roleAccId;
-
     @ManyToOne
-    @JoinColumn(name = "Role_Id", referencedColumnName = "Role_Id", nullable = false)
+    @JoinColumn(name = "roleById",referencedColumnName = "Role_Id")
     private RoleEntity rolesByRoleId;
 
-    @ManyToOne
-    @JoinColumn(name = "Acc_Id", referencedColumnName = "Acc_Id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "accById",referencedColumnName = "Acc_Id")
     private AccEntity accByUserId;
+    public AccRoleEntity(Integer accId,Integer roleId) {
+        this.accId = accId;
+        this.roleId = roleId;
+        this.rolesByRoleId = new RoleEntity(roleId);
+        this.accByUserId = new AccEntity(accId);
+    }
 }

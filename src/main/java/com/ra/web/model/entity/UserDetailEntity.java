@@ -10,8 +10,12 @@ import java.sql.Date;
 @Setter
 @Entity
 @Table(name = "acc_detail", schema = "warehouse_manager")
-public class AccDetailEntity {
+public class UserDetailEntity {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Id")
+    private Integer id;
+    @Basic
     @Column(name = "Acc_Id")
     private Integer accId;
     @Basic

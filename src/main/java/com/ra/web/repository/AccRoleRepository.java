@@ -1,6 +1,6 @@
 package com.ra.web.repository;
 
-import com.ra.web.model.entity.AccRoleEntity;
+import com.ra.web.model.entity.accounts.AccRoleEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

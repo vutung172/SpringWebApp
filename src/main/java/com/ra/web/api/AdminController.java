@@ -1,22 +1,15 @@
 package com.ra.web.api;
 
-import com.ra.web.model.entity.AccEntity;
-import com.ra.web.model.entity.AccRoleEntity;
-import com.ra.web.model.entity.RoleEntity;
-import com.ra.web.repository.AccDetailsRepository;
+import com.ra.web.model.entity.accounts.AccEntity;
+import com.ra.web.model.entity.accounts.AccRoleEntity;
 import com.ra.web.repository.AccRepository;
 import com.ra.web.repository.AccRoleRepository;
 import com.ra.web.repository.RoleRepository;
-import com.ra.web.service.Impl.AccDetailServiceImpl;
-import org.apache.catalina.connector.Response;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.management.relation.Role;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/api/admin")

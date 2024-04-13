@@ -1,17 +1,20 @@
-package com.ra.web.model.entity;
+package com.ra.web.model.entity.accounts;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "accounts", schema = "warehouse_manager")
 public class AccEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Acc_id")
@@ -23,6 +26,9 @@ public class AccEntity {
     @Column(name = "Password")
     private String password;
     @Basic
+    @Column(name = "Email")
+    private String email;
+    @Basic
     @Column(name = "Permission")
     private Boolean permission;
     @Basic
@@ -31,5 +37,8 @@ public class AccEntity {
 
     @OneToMany(fetch = FetchType.EAGER,mappedBy = "accByUserId")
     private List<AccRoleEntity> userRoleEntities;
+    public AccEntity(Integer id) {
+        this.accId = id;
+    }
 
 }

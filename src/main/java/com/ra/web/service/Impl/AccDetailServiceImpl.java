@@ -1,7 +1,7 @@
 package com.ra.web.service.Impl;
 
 import com.ra.web.model.dto.AccAdapter;
-import com.ra.web.model.entity.AccEntity;
+import com.ra.web.model.entity.accounts.AccEntity;
 import com.ra.web.repository.AccRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

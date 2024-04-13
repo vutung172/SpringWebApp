@@ -3,17 +3,17 @@ package com.ra.web.service.Impl;
 import com.ra.web.model.dto.AuthenticationRequest;
 import com.ra.web.model.dto.RegisterRequest;
 import com.ra.web.model.dto.AccAdapter;
-import com.ra.web.model.entity.AccDetailEntity;
-import com.ra.web.model.entity.AccRoleEntity;
-import com.ra.web.model.entity.AccEntity;
+import com.ra.web.model.entity.UserDetailEntity;
+import com.ra.web.model.entity.accounts.AccRoleEntity;
+import com.ra.web.model.entity.accounts.AccEntity;
 import com.ra.web.repository.AccDetailsRepository;
 import com.ra.web.repository.AccRepository;
 import com.ra.web.repository.AccRoleRepository;
 import com.ra.web.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,20 +26,21 @@ public class AuthenticationService {
     private final AccRoleRepository accRoleRepository;
     private final JwtUtil jwtUtil;
     private final AuthenticationManager authManager;
-    private final PasswordEncoder encoder = new BCryptPasswordEncoder();
+    @Autowired
+    private final PasswordEncoder passwordEncoder;
     public String register(RegisterRequest registration) {
         AccEntity acc = new AccEntity();
-        AccDetailEntity accDetail = new AccDetailEntity();
-        AccRoleEntity accRole = new AccRoleEntity();
+        UserDetailEntity accDetail = new UserDetailEntity();
+
 
         if (accRepository.findByUserName(registration.getUserName()).isEmpty() && accDetailsRepository.findAllByEmail(registration.getEmail()).isEmpty()){
             acc.setUserName(registration.getUserName());
             acc.setPassword(registration.getPassword());
+            acc.setEmail(registration.getEmail());
             acc.setAccStatus(true);
             accRepository.save(acc);
 
-            accRole.setAccId(acc.getAccId());
-            accRole.setRoleId(3);
+            AccRoleEntity accRole = new AccRoleEntity(acc.getAccId(), 3);
             accRoleRepository.save(accRole);
 
             accDetail.setAccId(acc.getAccId());
@@ -47,14 +48,14 @@ public class AuthenticationService {
             accDetail.setEmail(registration.getEmail());
             accDetail.setPhone(registration.getPhone());
             accDetail.setAddress(registration.getAddress());
-            /*accDetailsRepository.save(accDetail);*/
+            accDetailsRepository.save(accDetail);
 
             var user = AccAdapter.builder()
                     .accEntity(acc)
                     .build();
 
 
-            var jwtToken = jwtUtil.generateToken(user);
+            var jwtToken = jwtUtil.generateTokenAndEmail(user);
             return String.valueOf(jwtToken);
         } else {
             return null;
@@ -62,6 +63,7 @@ public class AuthenticationService {
     }
 
     public String authenticate(AuthenticationRequest authentication) {
+        String password = passwordEncoder.encode(authentication.getPassword());
         authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authentication.getUsername(),
@@ -72,7 +74,7 @@ public class AuthenticationService {
         if (acc != null){
             AccAdapter accAdapter = new AccAdapter();
             accAdapter.setAccEntity(acc);
-            var jwtToken = jwtUtil.generateToken(accAdapter);
+            var jwtToken = jwtUtil.generateTokenAndEmail(accAdapter);
             return String.valueOf(jwtToken);
         } else {
             return null;
