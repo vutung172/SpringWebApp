@@ -1,4 +1,4 @@
-package com.ra.web.api;
+package com.ra.web.model.dto;
 
 import lombok.*;
 

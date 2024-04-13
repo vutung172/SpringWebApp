@@ -1,16 +1,17 @@
 package com.ra.web.api;
 
 
+import com.ra.web.model.dto.AuthenticationRequest;
+import com.ra.web.model.dto.RegisterRequest;
 import com.ra.web.service.Impl.AuthenticationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/api/public/")
+@RequestMapping("/api/public")
 public class AuthenticationController {
     private final AuthenticationService authService;
 
@@ -24,8 +25,9 @@ public class AuthenticationController {
             @RequestBody RegisterRequest registration,
             Model model
     ){
-        if (authService.register(registration) != null){
-            model.addAttribute("token",authService.register(registration));
+        String token = authService.register(registration);
+        if (token != null){
+            model.addAttribute("token",token);
         } else {
             model.addAttribute("fail","Đăng ký thất bại");
 

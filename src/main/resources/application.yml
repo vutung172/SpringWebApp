@@ -1,29 +1,26 @@
-
+server:
+    port: 8011
 spring:
     application:
         name: webapp
     datasource:
+        driver-class-name: com.mysql.cj.jdbc.Driver
+        password: Vtt$88842648864
         url: jdbc:mysql://localhost:3306/warehouse_manager
         username: root
-        password: Vtt$88842648864
-        driver-class-name: com.mysql.cj.jdbc.Driver
     jpa:
         hibernate:
             ddl-auto: update
             naming:
                 implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
                 physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-        show-sql: true
         properties:
             hibernate:
                 format_sql: true
                 show_sql: true
+        show-sql: true
     servlet:
         multipart:
             enabled: true
             max-file-size: 50MB
             max-request-size: 50MB
-
-server:
-    port: 8011
-

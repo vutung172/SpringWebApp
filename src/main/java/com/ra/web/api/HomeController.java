@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @Controller
-@RequestMapping("/api/public")
+@RequestMapping("/api")
 public class HomeController {
     @GetMapping(value = {"","/","/index"})
     public String home(Model model){
