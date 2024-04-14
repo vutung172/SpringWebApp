@@ -38,6 +38,7 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authenticationProvider(authenticationProvider)
+                .logout().logoutSuccessUrl("/log-out-success").permitAll();
         ;
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 

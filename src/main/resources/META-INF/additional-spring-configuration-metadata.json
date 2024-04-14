@@ -1,0 +1,8 @@
+{
+  "properties": [
+    {
+      "name": "project.constant.jwt.JWT_KEY",
+      "type": "java.lang.String",
+      "description": "Description for project.constant.jwt.JWT_KEY."
+  }
+] }

@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -29,8 +30,9 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 public class JwtUtil {
-    private final long EXPIRED = (1000 * 60 * 60 * 2);
-    private final String JWT_KEY = "JWT_SECRET_KEY";
+    private final long EXPIRED = (1000 * 60  * 2);
+    @Value("${JwtToken.key}")
+    private String JWT_KEY;
 
     public String generateToken(UserDetails userDetails){
         Date now = new Date();

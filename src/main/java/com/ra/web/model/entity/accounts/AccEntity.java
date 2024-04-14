@@ -34,11 +34,9 @@ public class AccEntity {
     @Basic
     @Column(name = "Acc_status")
     private Boolean accStatus;
-
     @OneToMany(fetch = FetchType.EAGER,mappedBy = "accByUserId")
     private List<AccRoleEntity> userRoleEntities;
     public AccEntity(Integer id) {
         this.accId = id;
     }
-
 }

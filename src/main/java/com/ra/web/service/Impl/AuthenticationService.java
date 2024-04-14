@@ -53,8 +53,6 @@ public class AuthenticationService {
             var user = AccAdapter.builder()
                     .accEntity(acc)
                     .build();
-
-
             var jwtToken = jwtUtil.generateTokenAndEmail(user);
             return String.valueOf(jwtToken);
         } else {
@@ -63,7 +61,6 @@ public class AuthenticationService {
     }
 
     public String authenticate(AuthenticationRequest authentication) {
-        String password = passwordEncoder.encode(authentication.getPassword());
         authManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         authentication.getUsername(),
@@ -79,5 +76,9 @@ public class AuthenticationService {
         } else {
             return null;
         }
+    }
+
+    public boolean logout(AccEntity acc){
+        return true;
     }
 }

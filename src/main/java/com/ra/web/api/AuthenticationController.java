@@ -1,52 +1,56 @@
 package com.ra.web.api;
 
-
 import com.ra.web.model.dto.AuthenticationRequest;
 import com.ra.web.model.dto.RegisterRequest;
+import com.ra.web.model.entity.TokenEntity;
+import com.ra.web.service.Impl.AccServiceImpl;
 import com.ra.web.service.Impl.AuthenticationService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/public")
 public class AuthenticationController {
     private final AuthenticationService authService;
+    private final AccServiceImpl accService;
 
     @GetMapping(value = {"","/home",})
-    public String index(Model model){
-        return "index";
+    public ResponseEntity index(Model model){
+        model.addAttribute(accService.findAll());
+        return ResponseEntity.ok(model);
     }
 
     @PostMapping("/register")
-    public String register(
+    public ResponseEntity register(
             @RequestBody RegisterRequest registration,
             Model model
     ){
         String token = authService.register(registration);
         if (token != null){
-            model.addAttribute("token",token);
+            return ResponseEntity.ok().body(token);
         } else {
-            model.addAttribute("fail","Đăng ký thất bại");
-
+            return  ResponseEntity.badRequest().build();
         }
-        return index(model);
     }
 
     @PostMapping("/authenticate")
-    public String authenticate(
+    public ResponseEntity authenticate(
         @RequestBody AuthenticationRequest authentication,
         Model model
     ){
-        String token = authService.authenticate(authentication);
-        if (token != null){
-            model.addAttribute("token", token);
-            model.addAttribute("success","Đăng nhập thành công");
+        TokenEntity token = new TokenEntity(authService.authenticate(authentication));
+        if (token.getToken() != null){
+            return ResponseEntity.ok().body(token);
         } else {
-            model.addAttribute("fail","Đăng nhập thất bại");
+            return ResponseEntity.notFound().build();
         }
-        return index(model);
+    }
+
+    @PostMapping("log-out")
+    public ResponseEntity logout(){
+        return ResponseEntity.ok().build();
     }
 }
