@@ -9,8 +9,8 @@ import java.sql.Date;
 @Getter
 @Setter
 @Entity
-@Table(name = "user_details", schema = "warehouse_manager")
-public class UserDetailEntity {
+@Table(name = "employee_details", schema = "warehouse_manager")
+public class EmployeeDetailEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
@@ -19,11 +19,11 @@ public class UserDetailEntity {
     @Column(name = "Acc_Id")
     private Integer accId;
     @Basic
-    @Column(name = "User_Id")
-    private String userId;
+    @Column(name = "Employee_Id")
+    private String employeeId;
     @Basic
-    @Column(name = "User_Name")
-    private String userName;
+    @Column(name = "Employee_Name")
+    private String employeeName;
     @Basic
     @Column(name = "Birth_Of_Date")
     private Date birthOfDate;

@@ -1,8 +1,9 @@
-package com.ra.web.model.dto;
+package com.ra.web.model.dto.adapter;
 
 import com.ra.web.model.entity.accounts.AccEntity;
 import com.ra.web.repository.RoleRepository;
 import lombok.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,16 +20,14 @@ import java.util.List;
 @Getter
 @Component
 @AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class AccAdapter implements UserDetails{
     private AccEntity accEntity;
-    private RoleRepository roleRepository;
-
+    @Autowired
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> roles = new ArrayList<>();
-
         accEntity.getUserRoleEntities()
                 .forEach(ur -> roles.add(new SimpleGrantedAuthority(ur.getRolesByRoleId().getName())));
         return roles;
@@ -41,9 +40,6 @@ public class AccAdapter implements UserDetails{
     @Override
     public String getUsername() {
         return accEntity.getUserName();
-    }
-    public String getEmail(){
-        return accEntity.getEmail();
     }
 
     @Override

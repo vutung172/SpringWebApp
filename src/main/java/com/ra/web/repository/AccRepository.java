@@ -8,7 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface AccRepository extends JpaRepository<AccEntity,Integer> {
-
     Optional<AccEntity> findByUserNameAndPassword(String userName, String password);
     Optional<AccEntity> findByUserName(String userName);
 }

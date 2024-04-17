@@ -1,26 +1,16 @@
 package com.ra.web.util;
 
-import com.ra.web.model.dto.AccAdapter;
-import io.jsonwebtoken.Header;
+import com.ra.web.model.dto.adapter.AccAdapter;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
-import io.jsonwebtoken.security.Keys;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-import javax.print.DocFlavor;
-import java.security.AlgorithmConstraints;
-import java.security.Key;
 import java.security.MessageDigest;
 import java.util.Base64;
 import java.util.Date;
@@ -41,7 +31,7 @@ public class JwtUtil {
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(now)
                 .setExpiration(expired)
-                .signWith(SignatureAlgorithm.HS512,getSigningKey())
+                .signWith(SignatureAlgorithm.HS512, generateKey(JWT_KEY))
                 .compact();
         return token;
     }
@@ -51,7 +41,6 @@ public class JwtUtil {
         Date expired = new Date(now.getTime() +EXPIRED);
         Map<String,Object> user = new HashMap<>();
         user.put("userName",userDetails.getUsername());
-        user.put("email",userDetails.getEmail());
         user.put("password",userDetails.getPassword());
         String token = Jwts.builder().addClaims(user)
                 .setIssuedAt(now)
@@ -65,7 +54,7 @@ public class JwtUtil {
         String userName = Jwts.parser()
                 .setSigningKey(generateKey(JWT_KEY))
                 .parseClaimsJws(token)
-                .getBody().get("userName", String.class);
+                .getBody().getSubject();
         return userName;
     }
 

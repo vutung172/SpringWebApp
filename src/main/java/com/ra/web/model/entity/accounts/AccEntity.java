@@ -1,5 +1,6 @@
 package com.ra.web.model.entity.accounts;
 
+import com.ra.web.model.entity.EmployeeDetailEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,8 +35,13 @@ public class AccEntity {
     @Basic
     @Column(name = "Acc_status")
     private Boolean accStatus;
-    @OneToMany(fetch = FetchType.EAGER,mappedBy = "accByUserId")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "accByUserId")
     private List<AccRoleEntity> userRoleEntities;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "empId", referencedColumnName = "Acc_Id")
+    private EmployeeDetailEntity employeeDetail;
+
     public AccEntity(Integer id) {
         this.accId = id;
     }

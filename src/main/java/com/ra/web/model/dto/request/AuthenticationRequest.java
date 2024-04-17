@@ -1,4 +1,4 @@
-package com.ra.web.model.dto;
+package com.ra.web.model.dto.request;
 
 import lombok.*;
 
@@ -9,6 +9,5 @@ import lombok.*;
 @Builder
 public class AuthenticationRequest {
     private String username;
-    private String email;
     private String password;
 }

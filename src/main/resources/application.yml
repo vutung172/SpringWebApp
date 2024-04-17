@@ -25,5 +25,16 @@ spring:
             max-file-size: 50MB
             max-request-size: 50MB
 
+#logging:
+#  level:
+#    root: info
+#    com.ra.web.api: INFO
+##    com.ra.api.controller: INFO
+#  pattern:
+#    console: ${LOG_PATTERN:%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n}
+#  file:
+#    name: public/logs/WebApp.log
+#    path: public/logs/
+#
 JwtToken:
     key: "JWT_SECRET_KEY"

@@ -1,4 +1,4 @@
-package com.ra.web.model.dto;
+package com.ra.web.model.dto.request;
 
 import lombok.*;
 
@@ -15,4 +15,5 @@ public class RegisterRequest {
     private String email;
     private String phone;
     private String address;
+    private String employeeId;
 }

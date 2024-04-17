@@ -1,8 +1,9 @@
 package com.ra.web.api;
 
-import com.ra.web.model.dto.AuthenticationRequest;
-import com.ra.web.model.dto.RegisterRequest;
+import com.ra.web.model.dto.request.AuthenticationRequest;
+import com.ra.web.model.dto.request.RegisterRequest;
 import com.ra.web.model.entity.TokenEntity;
+import com.ra.web.model.entity.accounts.AccEntity;
 import com.ra.web.service.Impl.AccServiceImpl;
 import com.ra.web.service.Impl.AuthenticationService;
 import lombok.RequiredArgsConstructor;
@@ -53,4 +54,5 @@ public class AuthenticationController {
     public ResponseEntity logout(){
         return ResponseEntity.ok().build();
     }
+
 }
