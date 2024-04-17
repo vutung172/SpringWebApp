@@ -1,0 +1,272 @@
+{
+	"info": {
+		"_postman_id": "cbffea23-90a5-46c9-848e-792b7255d366",
+		"name": "Webapp",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28743693"
+	},
+	"item": [
+		{
+			"name": "Post-Registration",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"John\",\r\n    \"lastName\": \"Doe\",\r\n    \"userName\": \"johnd\",\r\n    \"password\": \"12345\",\r\n    \"email\": \"john.doe@example.com\",\r\n    \"phone\": \"0123456789\",\r\n    \"address\": \"Tokyo, Japan\",\r\n    \"userId\":\"C0001\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8011/api/public/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8011",
+					"path": [
+						"api",
+						"public",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post-Signin",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var resp = JSON.parse(responseBody);\r",
+							"pm.environment.set(\"token\", resp.token);\r",
+							"\r",
+							"pm.test(\"Response status code is 200\", function () {\r",
+							"    pm.expect(pm.response.code).to.equal(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Response must have the required field 'token'\", function () {\r",
+							"    const responseData = pm.response.json();\r",
+							"\r",
+							"    pm.expect(responseData).to.have.property('token');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Token is a non-empty string\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"  pm.expect(responseData.token).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Token should not be empty\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Content-Type header is application/json\", function () {\r",
+							"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							"pm.test(\"Token is in a valid format\", function () {\r",
+							"  const responseData = pm.response.json();\r",
+							"  \r",
+							"  pm.expect(responseData).to.be.an('object');\r",
+							"  pm.expect(responseData.token).to.be.a('string').and.to.have.lengthOf.at.least(1, \"Token should not be empty\");\r",
+							"});\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "jwt",
+					"jwt": [
+						{
+							"key": "secret",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "payload",
+							"value": "",
+							"type": "string"
+						},
+						{
+							"key": "algorithm",
+							"value": "HS512",
+							"type": "string"
+						},
+						{
+							"key": "addTokenTo",
+							"value": "header",
+							"type": "string"
+						},
+						{
+							"key": "isSecretBase64Encoded",
+							"value": false,
+							"type": "boolean"
+						},
+						{
+							"key": "headerPrefix",
+							"value": "Bearer",
+							"type": "string"
+						},
+						{
+							"key": "queryParamKey",
+							"value": "token",
+							"type": "string"
+						},
+						{
+							"key": "header",
+							"value": "{}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n   \"username\": \"johnd\",\r\n   \"password\": \"12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8011/api/public/authenticate",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8011",
+					"path": [
+						"api",
+						"public",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "index",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8011/api/index",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8011",
+					"path": [
+						"api",
+						"index"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "post-add-role",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8011/api/add-role",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8011",
+					"path": [
+						"api",
+						"add-role"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add-import-bill",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "\r\n[\r\n    {\r\n    \"productId\": \"A0006\",\r\n    \"quantity\": \"1000\",\r\n    \"price\": \"1000\"\r\n},\r\n{\r\n    \"productId\": \"A0002\",\r\n    \"quantity\": \"22\",\r\n    \"price\": \"1000\"\r\n}\r\n]",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8011/api/bill/add-to-import-bill/U0001",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8011",
+					"path": [
+						"api",
+						"bill",
+						"add-to-import-bill",
+						"U0001"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "approval-bill",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"billId\":\"66\",\r\n    \"billStatus\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8011/bill/approval-import-bill/A1111",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8011",
+					"path": [
+						"bill",
+						"approval-import-bill",
+						"A1111"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
