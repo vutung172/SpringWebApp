@@ -41,7 +41,7 @@ public class BillController {
             billDetailRequests.forEach(bdr -> billDetailService.add(newBill,bdr));
             BillEntity bill = billService.findById(newBill.getBillId());
             /*BillDto billDto = mapper.fromBillEntity(bill);*/
-            return ResponseEntity.ok().body(bill);
+            return ResponseEntity.ok(bill);
         } else {
             throw new BaseException("RA-001-001");
         }
