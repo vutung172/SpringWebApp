@@ -20,7 +20,7 @@ import java.util.Map;
 @Component
 @RequiredArgsConstructor
 public class JwtUtil {
-    private final long EXPIRED = (1000 * 60  * 2);
+    private final long EXPIRED = (1000 * 60  * 60 *2);
     @Value("${JwtToken.key}")
     private String JWT_KEY;
 

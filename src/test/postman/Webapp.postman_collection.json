@@ -214,7 +214,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "\r\n[\r\n    {\r\n    \"productId\": \"A0006\",\r\n    \"quantity\": \"1000\",\r\n    \"price\": \"1000\"\r\n},\r\n{\r\n    \"productId\": \"A0002\",\r\n    \"quantity\": \"22\",\r\n    \"price\": \"1000\"\r\n}\r\n]",
+					"raw": "\r\n[\r\n    {\r\n    \"productId\": \"A0006\",\r\n    \"quantity\": \"112\",\r\n    \"price\": \"1000\"\r\n},\r\n{\r\n    \"productId\": \"A0002\",\r\n    \"quantity\": \"25\",\r\n    \"price\": \"1000\"\r\n}\r\n]",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -222,16 +222,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8011/api/bill/add-to-import-bill/U0001",
+					"raw": "http://localhost:8011/bill/import-bill/U0001",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8011",
 					"path": [
-						"api",
 						"bill",
-						"add-to-import-bill",
+						"import-bill",
 						"U0001"
 					]
 				}
@@ -245,7 +244,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"billId\":\"66\",\r\n    \"billStatus\": 2\r\n}",
+					"raw": "{\r\n    \"billId\":\"65\",\r\n    \"billStatus\": 2\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -263,6 +262,35 @@
 						"bill",
 						"approval-import-bill",
 						"A1111"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update-bill",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"billId\":\"67\",\r\n    \"billDetails\":\r\n    [\r\n    {\r\n    \"productId\": \"A0006\",\r\n    \"quantity\": \"115\",\r\n    \"price\": \"1000\"\r\n},\r\n{\r\n    \"productId\": \"A0004\",\r\n    \"quantity\": \"25\",\r\n    \"price\": \"1000\"\r\n}\r\n    ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8011/bill/update-bill",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8011",
+					"path": [
+						"bill",
+						"update-bill"
 					]
 				}
 			},

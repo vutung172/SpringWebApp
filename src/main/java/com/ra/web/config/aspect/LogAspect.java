@@ -24,6 +24,7 @@ public class LogAspect {
         LOGGER.info("[START] {}.{} with params {}", joinPoint.getSignature().getDeclaringType(),
                 joinPoint.getSignature().getName(),
                 Arrays.asList(joinPoint.getArgs()));
+
         try { // Thực thi
             Long strat = System.currentTimeMillis();
             Object result = joinPoint.proceed(); // cho phương thức thực thi

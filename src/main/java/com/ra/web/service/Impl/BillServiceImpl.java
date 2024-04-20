@@ -4,9 +4,13 @@ import com.ra.web.Enum.ConstStatus;
 import com.ra.web.model.dto.request.ApprovalRequest;
 import com.ra.web.model.dto.request.BillDetailRequest;
 import com.ra.web.model.dto.request.BillUpdateRequest;
+import com.ra.web.model.entity.BillDetailsEntity;
 import com.ra.web.model.entity.BillEntity;
 import com.ra.web.repository.BillDetailRepository;
 import com.ra.web.repository.BillRepository;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -15,6 +19,8 @@ import java.util.Date;
 
 
 @Service
+@AllArgsConstructor
+@NoArgsConstructor
 public class BillServiceImpl {
     @Autowired
     private BillRepository billRepository;
@@ -34,23 +40,28 @@ public class BillServiceImpl {
         bill.setEmpIdAuth("A1111");
         bill.setAuthDate(new Date());
         bill.setBillStatus(ConstStatus.BillStt.CREATE);
-        return billRepository.save(bill);
+        BillEntity successBill = billRepository.save(bill);
+        return billRepository.findById(Integer.parseInt(String.valueOf(successBill.getBillId()))).orElse(null);
     }
     public BillEntity updateBill(BillUpdateRequest updateRequest){
         BillEntity oldBill = billRepository.findById(Math.toIntExact(updateRequest.getBillId())).orElse(null);
         if (oldBill != null){
             for (BillDetailRequest ur: updateRequest.getBillDetails()){
-                oldBill.getBillDetails().stream()
-                        .forEach(bd -> {
-                            if (bd.getProductId().equals(ur.getProductId())){
-                                bd.setQuantity(bd.getQuantity()+ur.getQuantity());
-                            } else {
-                                billDetailService.add(oldBill,ur);
-                            }
-                        });
+                int count = 0;
+                for (BillDetailsEntity bd : oldBill.getBillDetails()){
+                    if (bd.getProductId().equals(ur.getProductId())){
+                        bd.setQuantity(bd.getQuantity()+ur.getQuantity());
+                        billDetailService.update(bd);
+                        count++;
+                    }
+                }
+                if (count == 0) {
+                    billDetailService.add(oldBill, ur);
+                }
             }
+            return billRepository.findById(Integer.parseInt(String.valueOf(oldBill.getBillId()))).orElse(null);
         }
-        return oldBill;
+        return null;
     }
 
     public BillEntity approvalBill(ApprovalRequest approvalRequest){

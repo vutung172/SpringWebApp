@@ -21,4 +21,12 @@ public class BillDetailServiceImpl {
         billDetails.setBillId(bill.getBillId());
         return billDetailRepository.save(billDetails);
     }
+    public BillDetailsEntity update(BillDetailsEntity billDetails) {
+        BillDetailsEntity updateBillDetail = billDetailRepository.findById(Integer.parseInt(String.valueOf(billDetails.getBillDetailId()))).orElse(null);
+        if (updateBillDetail != null) {
+            updateBillDetail = billDetails;
+            return billDetailRepository.save(updateBillDetail);
+        }
+        return null;
+    }
 }

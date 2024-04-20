@@ -13,17 +13,16 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-@AllArgsConstructor
-@RequiredArgsConstructor
 public class AccDetailServiceImpl implements UserDetailsService {
     @Autowired
     private AccRepository accRepository;
-    @Autowired
-    private AccAdapter accAdapter;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AccEntity acc = accRepository.findByUserName(username).orElseThrow(() -> new UsernameNotFoundException("Username not found"));
-        accAdapter.setAccEntity(acc);
-        return accAdapter;
+        AccEntity acc = accRepository.findByUserName(username).orElse(null);
+        if (acc != null){
+            return new AccAdapter(acc);
+        }
+        throw new UsernameNotFoundException("Username \"" + username + "\" not found!");
     }
 }

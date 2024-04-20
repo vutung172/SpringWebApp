@@ -27,26 +27,8 @@ import java.io.IOException;
 @Component
 @RequiredArgsConstructor
 public class JwtFilterConfig extends OncePerRequestFilter {
-    @Autowired
-    private JwtUtil jwtUtil;
-    @Autowired
-    private AccDetailServiceImpl accDetailService;
-    @Autowired
-    private PasswordEncoder passwordEncoder;
-
-    @Bean
-    public AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
-        authProvider.setUserDetailsService(accDetailService);
-        authProvider.setPasswordEncoder(passwordEncoder);
-        return authProvider;
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
-        return config.getAuthenticationManager();
-    }
-
+    private final JwtUtil jwtUtil;
+    private final AccDetailServiceImpl accDetailService;
     @Override
     protected void doFilterInternal(
             @NonNull HttpServletRequest request,
@@ -56,25 +38,21 @@ public class JwtFilterConfig extends OncePerRequestFilter {
         String authHeader = request.getHeader("Authorization");
         if (authHeader != null && authHeader.startsWith("Bearer")) {
             String jwtToken = authHeader.substring(7);
-            String userName = jwtUtil.getUserName(jwtToken);
-            if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {// Xác nhận user có tồn tại ko
+            if (jwtUtil.validateToken(jwtToken)) {
+                String userName = jwtUtil.getUserName(jwtToken);
                 UserDetails userDetails = accDetailService
-                        .loadUserByUsername(userName);//Nếu user tồn tại thì load các atr của user
-                if (jwtUtil.validateToken(jwtToken)){// kiểm tra JWT token
-                    UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
-                            userDetails,
-                            null,
-                            userDetails.getAuthorities()
-                    );// Tạo đối tượng token với userDetail và phần quyền
-
-                    authenticationToken
-                            .setDetails(new WebAuthenticationDetailsSource()
-                                    .buildDetails(request));
-
-                    SecurityContextHolder
-                            .getContext()
-                            .setAuthentication(authenticationToken);
-                }
+                        .loadUserByUsername(userName);
+                UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
+                        userDetails,
+                        null,
+                        userDetails.getAuthorities()
+                );
+                authenticationToken
+                        .setDetails(new WebAuthenticationDetailsSource()
+                                .buildDetails(request));
+                SecurityContextHolder
+                        .getContext()
+                        .setAuthentication(authenticationToken);
             }
         }
         filterChain.doFilter(request,response);

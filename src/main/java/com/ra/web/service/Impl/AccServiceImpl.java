@@ -1,6 +1,7 @@
 package com.ra.web.service.Impl;
 
 import com.ra.web.model.dto.request.RegisterRequest;
+import com.ra.web.model.entity.EmployeeDetailEntity;
 import com.ra.web.model.entity.accounts.AccEntity;
 import com.ra.web.model.entity.accounts.AccRoleEntity;
 import com.ra.web.model.entity.accounts.RoleEntity;
@@ -32,18 +33,21 @@ public class AccServiceImpl implements AccService {
     public AccEntity findByUserName(String userName){
         return accRepository.findByUserName(userName).orElse(null);
     }
-    public AccEntity setRole(AccEntity acc,RoleEntity role){
-        AccEntity accSetRole = accRepository.findById(acc.getAccId()).orElse(null);
+    public AccEntity setRole(Integer accId,RoleEntity role){
+        AccEntity accSetRole = accRepository.findById(accId).orElse(null);
         AccRoleEntity accRole = new AccRoleEntity();
         if (accSetRole != null) {
-            List<AccRoleEntity> accRoles = accRoleRepository.findAllByAccId(acc.getAccId());
-            accRole.setAccId(acc.getAccId());
+            List<AccRoleEntity> accRoles = accRoleRepository.findAllByAccId(accId);
+            accRole.setAccId(accId);
             accRole.setRoleId(role.getRoleId());
             accRoleRepository.deleteAll(accRoles);
             accRoleRepository.save(accRole);
         }
         return accSetRole;
     }
+    /*public String findEmpIdByUserName(String userName){
+        AccEntity acc = accRepository.findByUserName(userName).orElse(null);
+    }*/
 
 
 }

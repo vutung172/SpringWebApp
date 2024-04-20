@@ -11,6 +11,7 @@ import com.ra.web.service.AccService;
 import com.ra.web.service.Impl.AccServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -20,6 +21,8 @@ import java.util.AbstractMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.springframework.security.authorization.AuthorityAuthorizationManager.hasRole;
+
 @RestController
 @RequestMapping("/api/admin")
 public class AdminController {
@@ -27,13 +30,13 @@ public class AdminController {
     private AccServiceImpl accService;
 
     @GetMapping("/dashboard")
-    public String dashboard(Model model) {
-        return "/admin/dashboard";
+    public ResponseEntity dashboard() {
+        return ResponseEntity.ok("dashboard");
     }
 
-   /* @PostMapping("/{id}")
-    public ResponseEntity setRole(@RequestBody AccEntity acc, @RequestBody RoleEntity role, Model model) {
-        UserDto user = accService.setRole(acc,role);
-        return ResponseEntity.ok().body(accSetNewRole);
-    }*/
+    @PostMapping("/set-role/{accId}")
+    public ResponseEntity setRole(@PathVariable Integer accId, @RequestBody RoleEntity role, Model model) {
+        AccEntity user = accService.setRole(accId,role);
+        return ResponseEntity.ok().body(user);
+    }
 }

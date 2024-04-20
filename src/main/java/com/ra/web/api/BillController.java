@@ -1,11 +1,9 @@
 package com.ra.web.api;
 
 import com.ra.web.config.exception.BaseException;
-import com.ra.web.model.dto.BillDto;
 import com.ra.web.model.dto.request.ApprovalRequest;
 import com.ra.web.model.dto.request.BillDetailRequest;
 import com.ra.web.model.dto.request.BillUpdateRequest;
-import com.ra.web.model.entity.BillDetailsEntity;
 import com.ra.web.model.entity.BillEntity;
 import com.ra.web.service.Impl.BillDetailServiceImpl;
 import com.ra.web.service.Impl.BillServiceImpl;
@@ -30,7 +28,7 @@ public class BillController {
     private final Mapper mapper;
 
     @GetMapping("/{id}")
-    public ResponseEntity getBills(@PathVariable int id, Model model) {
+    public ResponseEntity getBills(@PathVariable int id) {
         BillEntity bill = billService.findById(id);
         return ResponseEntity.ok().body(bill);
     }
@@ -38,8 +36,7 @@ public class BillController {
     @PostMapping("/import-bill/{employeeId}")
     public ResponseEntity createBill(
             @PathVariable String employeeId,
-            @RequestBody List<BillDetailRequest> billDetailRequests,
-            Model model) {
+            @RequestBody List<BillDetailRequest> billDetailRequests) {
         BillEntity newBill = billService.create(employeeId, true);
         if (newBill != null) {
             billDetailRequests.forEach(bdr -> billDetailService.add(newBill, bdr));
@@ -53,11 +50,11 @@ public class BillController {
 
     @PostMapping("/update-bill")
     public ResponseEntity updateBill(
-            @RequestBody BillUpdateRequest updateRequests,
-            Model model) {
+            @RequestBody BillUpdateRequest updateRequests) {
         BillEntity newBill = billService.updateBill(updateRequests);
         if (newBill != null) {
-            return ResponseEntity.ok(newBill);
+            BillEntity bill = billService.findById(newBill.getBillId());
+            return ResponseEntity.ok(bill);
         } else {
             throw new BaseException("RA-001-001");
         }
@@ -66,8 +63,7 @@ public class BillController {
     @PostMapping("/approval-import-bill/{employeeId}")
     public ResponseEntity approvalImportBill(
             @PathVariable String employeeId,
-            @RequestBody ApprovalRequest approvalRequest,
-            Model model
+            @RequestBody ApprovalRequest approvalRequest
     ) {
         BillEntity bill = billService.approvalBill(approvalRequest);
         if (bill != null) {

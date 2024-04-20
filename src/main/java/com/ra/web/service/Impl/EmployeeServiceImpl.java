@@ -24,4 +24,5 @@ public class EmployeeServiceImpl {
     public EmployeeDetailEntity create(){
         return null;
     }
+
 }

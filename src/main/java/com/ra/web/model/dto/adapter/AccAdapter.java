@@ -18,12 +18,10 @@ import java.util.List;
 @Builder
 @Setter
 @Getter
-@Component
 @AllArgsConstructor
 @RequiredArgsConstructor
 public class AccAdapter implements UserDetails{
     private AccEntity accEntity;
-    @Autowired
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
