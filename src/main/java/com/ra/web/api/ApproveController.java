@@ -7,10 +7,9 @@ import com.ra.web.model.entity.accounts.AccEntity;
 import com.ra.web.model.entity.accounts.RoleEntity;
 import com.ra.web.service.Impl.AccServiceImpl;
 import com.ra.web.service.Impl.BillServiceImpl;
-import com.ra.web.service.Impl.Mapper;
+import com.ra.web.util.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -29,9 +28,9 @@ public class ApproveController {
     }
 
     @PostMapping("/set-role/{accId}")
-    public ResponseEntity setRole(@PathVariable Integer accId, @RequestBody RoleEntity role, Model model) {
-        AccEntity user = accService.setRole(accId,role);
-        return ResponseEntity.ok().body(user);
+    public ResponseEntity setRole(@PathVariable Integer accId, @RequestBody RoleEntity role) {
+        AccEntity acc = accService.setRole(accId,role);
+        return ResponseEntity.ok().body(acc);
     }
     @PostMapping("/approval-import-bill/{employeeId}")
     public ResponseEntity approvalImportBill(

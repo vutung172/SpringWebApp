@@ -4,22 +4,26 @@ import com.ra.web.model.dto.request.BillDetailRequest;
 import com.ra.web.model.entity.BillDetailsEntity;
 import com.ra.web.model.entity.BillEntity;
 import com.ra.web.repository.BillDetailRepository;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
+import com.ra.web.util.Mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
-@RequiredArgsConstructor
+@Transactional(rollbackFor = Exception.class)
 public class BillDetailServiceImpl {
     @Autowired
     private BillDetailRepository billDetailRepository;
-    private final Mapper mapper;
+    @Autowired
+    private Mapper mapper;
     public BillDetailsEntity add(BillEntity bill, BillDetailRequest request){
-        BillDetailsEntity billDetails = mapper.toBillDetailEntity(request);
+        BillDetailsEntity billDetails = mapper.convertDTOToEntity(request,BillDetailsEntity.class);
         billDetails.setBillId(bill.getBillId());
-        return billDetailRepository.save(billDetails);
+        BillDetailsEntity createdBD =  billDetailRepository.save(billDetails);
+        return billDetailRepository.findById(Integer.parseInt(String.valueOf(createdBD.getBillDetailId()))).orElse(null);
     }
     public BillDetailsEntity update(BillDetailsEntity billDetails) {
         BillDetailsEntity updateBillDetail = billDetailRepository.findById(Integer.parseInt(String.valueOf(billDetails.getBillDetailId()))).orElse(null);
@@ -28,5 +32,9 @@ public class BillDetailServiceImpl {
             return billDetailRepository.save(updateBillDetail);
         }
         return null;
+    }
+
+    public List<BillDetailsEntity> findByBillId(Long billId){
+        return billDetailRepository.findAllByBillId(billId);
     }
 }

@@ -1,17 +1,15 @@
 package com.ra.web.model.dto;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class BillDetailDto {
     private Long billDetailId;
-    private String productName;
+    private String productId;
     private Integer quantity;
     private Double price;
-
-
 }

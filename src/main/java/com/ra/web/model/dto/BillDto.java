@@ -1,8 +1,11 @@
 package com.ra.web.model.dto;
 
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 import lombok.*;
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -14,12 +17,11 @@ import java.util.List;
 public class BillDto {
     private Long billId;
     private String billCode;
-    private String billType;
-    private String empCreated;
+    private Boolean billType;
+    private String empIdCreated;
     private Date created;
-    private String empAuth;
+    private String empIdAuth;
     private Date authDate;
-    private String billStatus;
-    private List<BillDetailDto> billDetails;
-
+    private Short billStatus;
+    private List<BillDetailDto> billDetails = new ArrayList<>();
 }

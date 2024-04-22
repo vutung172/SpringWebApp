@@ -2,16 +2,21 @@ package com.ra.web.model.entity;
 
 import com.ra.web.model.dto.BillDto;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "bills", schema = "warehouse_manager")
 public class BillEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +45,7 @@ public class BillEntity {
     @Column(name = "Bill_Status")
     private Short billStatus;
 
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "billId")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "bill")
     private List<BillDetailsEntity> billDetails;
 
 }

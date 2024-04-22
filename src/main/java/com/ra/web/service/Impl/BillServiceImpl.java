@@ -14,13 +14,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 
 
 @Service
-@AllArgsConstructor
-@NoArgsConstructor
 public class BillServiceImpl {
     @Autowired
     private BillRepository billRepository;
@@ -28,7 +27,12 @@ public class BillServiceImpl {
     private BillDetailServiceImpl billDetailService;
 
     public BillEntity findById(long id) {
-        return billRepository.findById((int)id).orElse(null);
+        BillEntity bill = billRepository.findById((int)id).orElse(null);
+        if (bill != null){
+            bill.setBillDetails(billDetailService.findByBillId(id));
+            return bill;
+        } else {return null;}
+
     }
 
     public BillEntity create(String employeeId, Boolean billType) {

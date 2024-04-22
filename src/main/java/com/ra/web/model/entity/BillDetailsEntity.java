@@ -30,8 +30,9 @@ public class BillDetailsEntity {
     @Basic
     @Column(name = "Price")
     private double price;
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "billId",referencedColumnName = "Bill_Id")
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "billId", referencedColumnName = "Bill_Id")
     private BillEntity bill;
 
 }

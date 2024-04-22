@@ -3,7 +3,7 @@ package com.ra.web.api;
 import com.ra.web.model.entity.BillEntity;
 import com.ra.web.service.Impl.BillDetailServiceImpl;
 import com.ra.web.service.Impl.BillServiceImpl;
-import com.ra.web.service.Impl.Mapper;
+import com.ra.web.util.Mapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
