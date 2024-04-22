@@ -20,17 +20,18 @@ public class AccRoleEntity {
     @Column(name = "Role_Id")
     private Integer roleId;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "roleById",referencedColumnName = "Role_Id")
     private RoleEntity rolesByRoleId;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "accById",referencedColumnName = "Acc_Id")
-    private AccEntity accByUserId;
+    private AccEntity accByUserRoleId;
+
     public AccRoleEntity(Integer accId,Integer roleId) {
         this.accId = accId;
         this.roleId = roleId;
         this.rolesByRoleId = new RoleEntity(roleId);
-        this.accByUserId = new AccEntity(accId);
+        this.accByUserRoleId = new AccEntity(accId);
     }
 }

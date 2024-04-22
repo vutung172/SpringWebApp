@@ -72,5 +72,8 @@ public class BillServiceImpl {
         }
         return null;
     }
+    public BillEntity update(BillEntity bill){
+        return billRepository.save(bill);
+    }
 
 }

@@ -1,36 +1,34 @@
 package com.ra.web.api;
 
 import com.ra.web.config.exception.BaseException;
-import com.ra.web.model.dto.request.ApprovalRequest;
 import com.ra.web.model.dto.request.BillDetailRequest;
 import com.ra.web.model.dto.request.BillUpdateRequest;
 import com.ra.web.model.entity.BillEntity;
 import com.ra.web.service.Impl.BillDetailServiceImpl;
 import com.ra.web.service.Impl.BillServiceImpl;
 import com.ra.web.service.Impl.Mapper;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@RestController
-@RequestMapping(value = "/bill")
-@RequiredArgsConstructor
-public class BillController {
+@Controller
+@RequestMapping("/create")
+public class CreateController {
     @Autowired
     private BillServiceImpl billService;
     @Autowired
     private BillDetailServiceImpl billDetailService;
     @Autowired
-    private final Mapper mapper;
+    private Mapper mapper;
 
-    @GetMapping("/{id}")
-    public ResponseEntity getBills(@PathVariable int id) {
-        BillEntity bill = billService.findById(id);
-        return ResponseEntity.ok().body(bill);
+    @GetMapping(value = {"","/","/index"})
+    public String home(Model model){
+        model.addAttribute("endpoint","hello world");
+        return "index";
     }
 
     @PostMapping("/import-bill/{employeeId}")
@@ -48,29 +46,20 @@ public class BillController {
         }
     }
 
-    @PostMapping("/update-bill")
+    @PostMapping("/update-bill/{employeeId}")
     public ResponseEntity updateBill(
-            @RequestBody BillUpdateRequest updateRequests) {
-        BillEntity newBill = billService.updateBill(updateRequests);
-        if (newBill != null) {
-            BillEntity bill = billService.findById(newBill.getBillId());
-            return ResponseEntity.ok(bill);
-        } else {
-            throw new BaseException("RA-001-001");
-        }
-    }
-
-    @PostMapping("/approval-import-bill/{employeeId}")
-    public ResponseEntity approvalImportBill(
             @PathVariable String employeeId,
-            @RequestBody ApprovalRequest approvalRequest
-    ) {
-        BillEntity bill = billService.approvalBill(approvalRequest);
+            @RequestBody BillUpdateRequest updateRequests) {
+        BillEntity bill = billService.findById(updateRequests.getBillId());
         if (bill != null) {
-            return ResponseEntity.ok(bill);
+            if (bill.getEmpIdCreated().equals(employeeId)){
+                BillEntity newBill = billService.updateBill(updateRequests);
+                return ResponseEntity.ok(newBill);
+            } else {
+                throw new BaseException("RA-001-001");
+            }
         } else {
             throw new BaseException("RA-001-001");
         }
     }
 }
-

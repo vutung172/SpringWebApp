@@ -1,13 +1,18 @@
 package com.ra.web.model.entity;
 
+import com.ra.web.model.entity.accounts.AccEntity;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.sql.Date;
 
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "employee_details", schema = "warehouse_manager")
 public class EmployeeDetailEntity {
@@ -39,4 +44,8 @@ public class EmployeeDetailEntity {
     @Basic
     @Column(name = "User_Status")
     private Short userStatus;
+
+    @OneToOne(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
+    @JoinColumn(name = "accId", referencedColumnName = "Acc_Id")
+    private AccEntity accByEmp;
 }

@@ -1,14 +1,15 @@
 package com.ra.web.model.entity;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.sql.Date;
-
+@Builder
 @Getter
 @Setter
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "products", schema = "warehouse_manager")
 public class ProductEntity {
     @Id

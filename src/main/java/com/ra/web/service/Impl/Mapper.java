@@ -6,9 +6,7 @@ import com.ra.web.model.dto.BillDto;
 import com.ra.web.model.dto.request.BillDetailRequest;
 import com.ra.web.model.entity.BillDetailsEntity;
 import com.ra.web.model.entity.BillEntity;
-import com.ra.web.repository.BillRepository;
 import com.ra.web.repository.EmployeeRepository;
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,7 +45,7 @@ public class Mapper {
     }
 
     public BillDetailDto fromBillDetailEntity(BillDetailsEntity entity) {
-        ProductService service = new ProductService();
+        ProductServiceImpl service = new ProductServiceImpl();
         return BillDetailDto.builder()
                 .billDetailId(entity.getBillDetailId())
                 .productName(service.findNameById(entity.getProductId()))

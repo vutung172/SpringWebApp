@@ -2,13 +2,11 @@ package com.ra.web.model.entity.accounts;
 
 import com.ra.web.model.entity.EmployeeDetailEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
+@Builder
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,7 +16,7 @@ import java.util.List;
 public class AccEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Acc_id")
+    @Column(name = "Acc_Id")
     private Integer accId;
     @Basic
     @Column(name = "User_name")
@@ -35,11 +33,11 @@ public class AccEntity {
     @Basic
     @Column(name = "Acc_status")
     private Boolean accStatus;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "accByUserId")
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "accByUserRoleId")
     private List<AccRoleEntity> userRoleEntities;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "empId", referencedColumnName = "Acc_Id")
+    @OneToOne(fetch = FetchType.LAZY, mappedBy = "accByEmp")
     private EmployeeDetailEntity employeeDetail;
 
     public AccEntity(Integer id) {

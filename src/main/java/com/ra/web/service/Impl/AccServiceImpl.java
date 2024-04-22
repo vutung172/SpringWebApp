@@ -16,10 +16,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@AllArgsConstructor
-@NoArgsConstructor
 public class AccServiceImpl implements AccService {
+    @Autowired
     private AccRepository accRepository;
+    @Autowired
     private AccRoleRepository accRoleRepository;
     public List<AccEntity> findAll(){
         return accRepository.findAll();
@@ -31,7 +31,8 @@ public class AccServiceImpl implements AccService {
         return null;
     }
     public AccEntity findByUserName(String userName){
-        return accRepository.findByUserName(userName).orElse(null);
+        return accRepository.findByUserName(userName)
+                .orElse(null);
     }
     public AccEntity setRole(Integer accId,RoleEntity role){
         AccEntity accSetRole = accRepository.findById(accId).orElse(null);
@@ -45,9 +46,11 @@ public class AccServiceImpl implements AccService {
         }
         return accSetRole;
     }
-    /*public String findEmpIdByUserName(String userName){
-        AccEntity acc = accRepository.findByUserName(userName).orElse(null);
-    }*/
-
-
+    public String findEmpIdByUserName(String userName){
+        AccEntity acc = findByUserName(userName);
+        if (acc != null){
+            return acc.getEmployeeDetail().getEmployeeId();
+        }
+        return  null;
+    }
 }

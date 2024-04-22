@@ -1,22 +1,28 @@
 package com.ra.web.api;
 
+import com.ra.web.model.dto.TokenDto;
 import com.ra.web.model.dto.request.AuthenticationRequest;
 import com.ra.web.model.dto.request.RegisterRequest;
 import com.ra.web.model.entity.TokenEntity;
 import com.ra.web.model.entity.accounts.AccEntity;
 import com.ra.web.service.Impl.AccServiceImpl;
 import com.ra.web.service.Impl.AuthenticationService;
+import com.ra.web.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequiredArgsConstructor
 @RequestMapping("/api/public")
 public class AuthenticationController {
-    private final AuthenticationService authService;
-    private final AccServiceImpl accService;
+    @Autowired
+    private AuthenticationService authService;
+    @Autowired
+    private AccServiceImpl accService;
+    @Autowired
+    private JwtUtil jwtUtil;
 
     @GetMapping(value = {"","/home",})
     public ResponseEntity index(Model model){
@@ -26,8 +32,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     public ResponseEntity register(
-            @RequestBody RegisterRequest registration,
-            Model model
+            @RequestBody RegisterRequest registration
     ){
         String token = authService.register(registration);
         if (token != null){
@@ -39,12 +44,16 @@ public class AuthenticationController {
 
     @PostMapping("/authenticate")
     public ResponseEntity authenticate(
-        @RequestBody AuthenticationRequest authentication,
-        Model model
+        @RequestBody AuthenticationRequest authentication
     ){
         TokenEntity token = new TokenEntity(authService.authenticate(authentication));
         if (token.getToken() != null){
-            return ResponseEntity.ok().body(token);
+            String userName = jwtUtil.getUserName(token.getToken());
+            String employeeId = accService.findEmpIdByUserName(userName);
+            TokenDto tokenDto = new TokenDto();
+            tokenDto.setToken(token);
+            tokenDto.setEmployeeId(employeeId);
+            return ResponseEntity.ok().body(tokenDto);
         } else {
             return ResponseEntity.notFound().build();
         }
