@@ -44,7 +44,7 @@ public class ApproveController {
             billService.update(bill);
             return ResponseEntity.ok(bill);
         } else {
-            throw new BaseException("RA-001-001");
+            throw new BaseException("RA-01-001");
         }
     }
 }

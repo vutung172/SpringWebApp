@@ -42,7 +42,7 @@ public class CreateController {
             /*BillDto billDto = mapper.fromBillEntity(bill);*/
             return ResponseEntity.ok(bill);
         } else {
-            throw new BaseException("RA-001-001");
+            throw new BaseException("RA-01-001");
         }
     }
 
@@ -56,10 +56,10 @@ public class CreateController {
                 BillEntity newBill = billService.updateBill(updateRequests);
                 return ResponseEntity.ok(newBill);
             } else {
-                throw new BaseException("RA-001-001");
+                throw new BaseException("RA-01-002");
             }
         } else {
-            throw new BaseException("RA-001-001");
+            throw new BaseException("RA-01-001");
         }
     }
 }
