@@ -26,9 +26,8 @@ public class CreateController {
     private Mapper mapper;
 
     @GetMapping(value = {"","/","/index"})
-    public String home(Model model){
-        model.addAttribute("endpoint","hello world");
-        return "index";
+    public ResponseEntity home(){
+        return ResponseEntity.ok().body("Create page");
     }
 
     @PostMapping("/import-bill/{employeeId}")
