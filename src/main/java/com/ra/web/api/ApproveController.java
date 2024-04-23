@@ -1,6 +1,9 @@
 package com.ra.web.api;
 
 import com.ra.web.config.exception.BaseException;
+import com.ra.web.model.dto.AccDto;
+import com.ra.web.model.dto.BillDetailDto;
+import com.ra.web.model.dto.BillDto;
 import com.ra.web.model.dto.request.ApprovalRequest;
 import com.ra.web.model.entity.BillEntity;
 import com.ra.web.model.entity.accounts.AccEntity;
@@ -30,7 +33,8 @@ public class ApproveController {
     @PostMapping("/set-role/{accId}")
     public ResponseEntity setRole(@PathVariable Integer accId, @RequestBody RoleEntity role) {
         AccEntity acc = accService.setRole(accId,role);
-        return ResponseEntity.ok().body(acc);
+        AccDto accDto = mapper.convertEntityToDTO(acc, AccDto.class);
+        return ResponseEntity.ok().body(accDto);
     }
     @PostMapping("/approval-import-bill/{employeeId}")
     public ResponseEntity approvalImportBill(
@@ -40,8 +44,10 @@ public class ApproveController {
         BillEntity bill = billService.approvalBill(approvalRequest);
         if (bill != null) {
             bill.setEmpIdAuth(employeeId);
-            billService.update(bill);
-            return ResponseEntity.ok(bill);
+            BillEntity updatedBill = billService.findById(bill.getBillId());
+            BillDto billDto = mapper.convertEntityToDTO(updatedBill,BillDto.class);
+            updatedBill.getBillDetails().forEach(bd -> billDto.getBillDetails().add(mapper.convertEntityToDTO(bd, BillDetailDto.class)));
+            return ResponseEntity.ok(billDto);
         } else {
             throw new BaseException("RA-01-001");
         }

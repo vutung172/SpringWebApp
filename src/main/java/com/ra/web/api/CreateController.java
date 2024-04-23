@@ -55,8 +55,9 @@ public class CreateController {
         if (bill != null) {
             if (bill.getEmpIdCreated().equals(employeeId)){
                 BillEntity newBill = billService.updateBill(updateRequests);
-                BillDto billDto = mapper.convertEntityToDTO(newBill,BillDto.class);
-                newBill.getBillDetails().forEach(bd -> billDto.getBillDetails().add(mapper.convertEntityToDTO(bd, BillDetailDto.class)));
+                BillEntity updatedBill = billService.findById(newBill.getBillId());
+                BillDto billDto = mapper.convertEntityToDTO(updatedBill,BillDto.class);
+                updatedBill.getBillDetails().forEach(bd -> billDto.getBillDetails().add(mapper.convertEntityToDTO(bd, BillDetailDto.class)));
                 return ResponseEntity.ok(billDto);
             } else {
                 throw new BaseException("RA-01-002");

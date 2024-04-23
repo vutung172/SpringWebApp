@@ -19,10 +19,15 @@ import java.util.List;
 @Setter
 @Getter
 @AllArgsConstructor
-@RequiredArgsConstructor
+@NoArgsConstructor
 public class AccAdapter implements UserDetails{
     private AccEntity accEntity;
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private PasswordEncoder passwordEncoder;
+
+    public AccAdapter(AccEntity accEntity) {
+        this.accEntity = accEntity;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> roles = new ArrayList<>();

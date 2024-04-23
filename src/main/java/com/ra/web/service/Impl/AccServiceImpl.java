@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
+@NoArgsConstructor
 public class AccServiceImpl implements AccService {
     @Autowired
     private AccRepository accRepository;
@@ -43,8 +45,9 @@ public class AccServiceImpl implements AccService {
             accRole.setRoleId(role.getRoleId());
             accRoleRepository.deleteAll(accRoles);
             accRoleRepository.save(accRole);
+            return accRepository.findById(accSetRole.getAccId()).orElse(null);
         }
-        return accSetRole;
+        return null;
     }
     public String findEmpIdByUserName(String userName){
         AccEntity acc = findByUserName(userName);

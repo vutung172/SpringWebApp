@@ -22,15 +22,14 @@ import org.springframework.stereotype.Service;
 
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class AuthenticationService {
-    private final AccRepository accRepository;
-    private final EmployeeRepository employeeRepository;
-    private final AccRoleRepository accRoleRepository;
-    private final JwtUtil jwtUtil;
-    private final AuthenticationManager authManager;
-    @Autowired
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private AccRepository accRepository;
+    private EmployeeRepository employeeRepository;
+    private AccRoleRepository accRoleRepository;
+    private JwtUtil jwtUtil;
+    private AuthenticationManager authManager;
 
     public String register(RegisterRequest registration) {
         AccEntity acc = new AccEntity();

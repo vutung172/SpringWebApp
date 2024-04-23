@@ -20,6 +20,8 @@ import java.util.Date;
 
 
 @Service
+@AllArgsConstructor
+@NoArgsConstructor
 public class BillServiceImpl {
     @Autowired
     private BillRepository billRepository;
@@ -63,7 +65,7 @@ public class BillServiceImpl {
                     billDetailService.add(oldBill, ur);
                 }
             }
-            return billRepository.findById(Integer.parseInt(String.valueOf(oldBill.getBillId()))).orElse(null);
+            return billRepository.findBillEntitiesByBillId(oldBill.getBillId()).orElse(null);
         }
         return null;
     }

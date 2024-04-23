@@ -13,10 +13,11 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
+@NoArgsConstructor
+@AllArgsConstructor
 public class AccDetailServiceImpl implements UserDetailsService {
     @Autowired
     private AccRepository accRepository;
-
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         AccEntity acc = accRepository.findByUserName(username).orElse(null);

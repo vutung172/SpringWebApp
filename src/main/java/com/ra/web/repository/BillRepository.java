@@ -8,5 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface BillRepository extends JpaRepository<BillEntity, Integer> {
+    Optional<BillEntity> findBillEntitiesByBillId(Long id);
 
 }

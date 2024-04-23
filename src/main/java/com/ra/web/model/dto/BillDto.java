@@ -23,5 +23,5 @@ public class BillDto {
     private String empIdAuth;
     private Date authDate;
     private Short billStatus;
-    private List<BillDetailDto> billDetails = new ArrayList<>();
+    private List<BillDetailDto> billDetails;
 }

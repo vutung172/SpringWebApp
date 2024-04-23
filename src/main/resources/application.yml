@@ -7,7 +7,7 @@ spring:
         name: webapp
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        password: Vtt$88842648864
+        password: tung@172
         url: jdbc:mysql://localhost:3306/warehouse_manager
         username: root
     jpa:

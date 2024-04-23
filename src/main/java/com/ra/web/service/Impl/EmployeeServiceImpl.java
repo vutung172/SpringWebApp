@@ -9,9 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
+@NoArgsConstructor
+@AllArgsConstructor
 public class EmployeeServiceImpl {
-    private final EmployeeRepository employeeRepository;
+    private EmployeeRepository employeeRepository;
 
     public String findNameByEmpId(String id){
         EmployeeDetailEntity empl = employeeRepository.findEmployeeDetailEntityByEmployeeId(id);

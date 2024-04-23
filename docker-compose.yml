@@ -1,0 +1,41 @@
+version: '3'
+
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql_container
+    environment:
+      MYSQL_ROOT_PASSWORD: Abc@123
+      MYSQL_DATABASE: webapp
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: Abc@123
+    ports:
+      - "33061:3306"
+    networks:
+      - my-networks
+  app-api:
+    build: .
+    ports:
+      - "8011:8011"
+    image: webapp_image
+    container_name: webapp
+    environment:
+      DB_URL: jdbc:mysql://mysql_container:3306/warehouse_manager?useSSL=false&requireSSL=false&verifyServerCertificate=false&allowPublicKeyRetrieval=true
+      DB_USER: root
+      DB_PASSWORD: Vtt$88842648864
+      DB_HIBERNATE_DDL_AUTO: update
+    networks:
+      - my-networks
+networks:
+  my-networks:
+    driver: bridge
+#  app-api1:
+#    build: .
+#    ports:
+#      - "2345:6789"
+#    image: session5_iamge
+#    container_name: session5_app
+#    environment:
+#      DB_URL: jdbc:mysql://host.docker.internal:3306/spring_secutiry
+#      DB_USER: root
+#      DB_PASSWORD: Abc@1234
